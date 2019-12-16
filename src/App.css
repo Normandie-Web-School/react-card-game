@@ -1,38 +1,126 @@
+/*
+Propriétés personnalisées (--*)
+https://developer.mozilla.org/fr/docs/Web/CSS/--*
+Attention cependant à la compatibilité des navigateurs
+ */
+:root {
+    --neon-text-color: #f40;
+    --neon-border-color: #08f;
+}
+
+/*
+Layout global de la page
+En CSS Grid
+ */
 .App {
-  text-align: center;
+    min-height: 100vh;
+
+    /*Grid*/
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 1fr;
+    grid-template-rows: 0.5fr 1fr 0.5fr;
+    grid-template-areas: ". LeftWinner RightWinner ." ". PlayerOne PlayerTwo ." ". GameZone GameZone .";
+
+    /*Background*/
+    background-image: url("./background.jpeg");
+    background-size: cover;
+
+    font-family: sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Grid positions */
+.PlayerOne {
+    grid-area: PlayerOne;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.LeftWinner {
+    grid-area: LeftWinner;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.RightWinner {
+    grid-area: RightWinner;
 }
 
-.App-link {
-  color: #61dafb;
+.PlayerTwo {
+    grid-area: PlayerTwo;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.GameZone {
+    grid-area: GameZone;
 }
+
+/*
+Utilisé pour centrer les éléments en flexbox
+ */
+.FlexCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Font Styling */
+.LeftWinner, .RightWinner {
+    color: white;
+
+    font-size: 2rem;
+    text-transform: uppercase;
+}
+
+.GameButton {
+    width: 100%;
+
+    padding: 1rem 2rem 1rem;
+    border: 0.4rem solid #fff;
+    border-radius: 2rem;
+
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 200;
+    font-style: italic;
+
+    color: #fff;
+    text-transform: uppercase;
+
+}
+
+.GameButton:hover {
+    cursor: pointer;
+}
+
+.Neon {
+    text-shadow: -0.2rem -0.2rem 1rem #fff,
+    0.2rem 0.2rem 1rem #fff,
+    0 0 2rem var(--neon-text-color),
+    0 0 4rem var(--neon-text-color),
+    0 0 6rem var(--neon-text-color),
+    0 0 8rem var(--neon-text-color),
+    0 0 10rem var(--neon-text-color);
+
+    box-shadow: 0 0 .5rem #fff,
+    inset 0 0 .5rem #fff,
+    0 0 2rem var(--neon-border-color),
+    inset 0 0 1rem var(--neon-border-color),
+    0 0 2rem var(--neon-border-color),
+    inset 0 0 2rem var(--neon-border-color);
+}
+
+.NeonPink {
+    box-shadow: 0 0 .5rem #fff,
+    inset 0 0 .5rem #fff,
+    0 0 2rem #CB088C,
+    0 0 4rem #CB088C,
+    0 0 6rem #CB088C,
+    0 0 8rem #CB088C,
+    0 0 10rem #CB088C;
+}
+
+.NeonTextOnly {
+    text-shadow: -0.2rem -0.2rem 1rem #fff,
+    0.2rem 0.2rem 1rem #fff,
+    0 0 2rem #CB088C,
+    0 0 4rem #CB088C,
+    0 0 6rem #CB088C,
+    0 0 8rem #CB088C,
+    0 0 10rem #CB088C;
+}
+

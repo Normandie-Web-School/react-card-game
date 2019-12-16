@@ -1,0 +1,52 @@
+.CardContainer {
+    width: 200px;
+    height: 300px;
+
+    /*Transition*/
+    position: relative;
+    z-index: 1;
+    perspective: 1000px;
+}
+
+.CardBody {
+    width: 100%;
+    height: 100%;
+
+    /*Transition*/
+    transform-style: preserve-3d;
+    transition: all .7s linear;
+}
+
+.CardFront {
+    font-size: 2rem;
+    text-transform: uppercase;
+
+    /*Transition*/
+    transform: rotateY(180deg);
+}
+
+.CardSide {
+    position: absolute;
+
+    border-radius: 15px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    color: white;
+
+    background-color: black;
+    backface-visibility: hidden;
+}
+
+.CardContainer.Active .CardBody {
+    /* Transition Active */
+    transform: rotateY(180deg);
+}
+
+.CardContainer.Active .CardBody .CardBack {
+    /* Transition Active */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease-in, visibility .75s linear;
+}
