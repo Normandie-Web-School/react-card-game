@@ -4,15 +4,6 @@ import Card from './Components/Card/Card';
 import {getRandomInt} from "./Utils/functions";
 
 
-/*
-@INFO
-AllCard, toutes nos cartes de base
-Que signifient 1 / 11 / 12 // 13 (?)
-Ou sont passés l'AS, le valet, la reine et le roi ?
-
-Mais pourquoi une constante pour les stocker ?
-Comment modifier le jeu quand une carte est tirée ?
- */
 const AllCards = {
     colors: ['Red', 'Black'],
     shape: ['Heart', 'Tile', 'Clover', 'Pike'],
@@ -25,11 +16,6 @@ export default class App extends Component {
     constructor() {
         super();
 
-        /*
-        @Info
-        Le state global de l'application est App.js
-        Nous pouvons gérer l'état global de l'application ici
-         */
         this.state = {
             showCards: false,
             leftHand: {
@@ -46,9 +32,6 @@ export default class App extends Component {
         };
     }
 
-    /*
-    Génère une main grâce à notre const "AllCards"
-     */
     generateHand = () => {
         return {
             color: AllCards.colors[getRandomInt(AllCards.colors.length)],
@@ -57,15 +40,11 @@ export default class App extends Component {
         }
     };
 
-    /*
-    Fonction appelée au clic sur "Démarrer"
-     */
-    startRound = () => {
+    startRound = async () => {
         let active = this.state.showCards;
 
         if (!active) {
-            // Epreuve [1]
-            // TODO: Quelle fonction appeler quand l'on veut lancer un nouveau jeu ?
+            this.generateNewCards();
         } else {
             this.setState({winner: ''})
         }
@@ -75,18 +54,10 @@ export default class App extends Component {
         })
     };
 
-    /*
-    Génère un nouveau couple de cartes pour la main gauche et main droite
-     */
     generateNewCards = () => {
 
         let leftHand = this.generateHand();
         let rightHand = this.generateHand();
-
-        /*
-        TODO: Il n'existe pas à l'heure actuelle de pile(s) de cartes
-        TODO: Enlever à chaque tour 2 cartes à la pile
-         */
 
         let winner = this.getWinner(leftHand, rightHand);
 
@@ -98,9 +69,7 @@ export default class App extends Component {
     };
 
     getWinner = (leftHand, rightHand) => {
-        // TODO: Comment savoir quelle main gagne ?
-        // TODO: Votre mission est de développer la fonction
-        return 'left'; // ou 'right' (?)
+        return leftHand.card > rightHand.card ? 'left' : 'right'
     };
 
     render() {
