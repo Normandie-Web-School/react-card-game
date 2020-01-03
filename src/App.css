@@ -19,7 +19,7 @@ En CSS Grid
     display: grid;
     grid-template-columns: 1fr 2fr 2fr 1fr;
     grid-template-rows: 0.5fr 1fr 0.5fr;
-    grid-template-areas: ". LeftWinner RightWinner ." ". PlayerOne PlayerTwo ." ". GameZone GameZone .";
+    grid-template-areas: "LeftPts LeftWinner RightWinner RightPts" ". PlayerOne PlayerTwo ." ". GameZone GameZone .";
 
     /*Background*/
     background-image: url("./background.jpeg");
@@ -28,6 +28,18 @@ En CSS Grid
     font-family: sans-serif;
 }
 
+.LeftPts {
+    grid-area: LeftPts;
+}
+.RightPts {
+    grid-area: RightPts;
+}
+
+.LeftPts, .RightPts {
+    color: white;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+}
 /* Grid positions */
 .PlayerOne {
     grid-area: PlayerOne;
@@ -56,6 +68,7 @@ Utilisé pour centrer les éléments en flexbox
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: row;
 }
 
 /* Font Styling */

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import Card from './Components/Card/Card';
-import {getRandomInt} from "./Utils/functions";
+import {getRandomInt, shuffle} from "./Utils/functions";
 
 
 const AllCards = {
@@ -17,7 +17,14 @@ export default class App extends Component {
         super();
 
         this.state = {
+            /*
+             * Dans cet exemple
+             * il n'y a qu'une pile de carte pour les deux joueurs
+             */
+            deck: [],
             showCards: false,
+            leftPts: 0,
+            rightPts: 0,
             leftHand: {
                 color: '',
                 shape: '',
@@ -32,16 +39,63 @@ export default class App extends Component {
         };
     }
 
-    generateHand = () => {
-        return {
-            color: AllCards.colors[getRandomInt(AllCards.colors.length)],
-            shape: AllCards.shape[getRandomInt(AllCards.shape.length)],
-            card: AllCards.cards[getRandomInt(AllCards.cards.length)],
+    /*
+    Génère les cartes au lancement de l'application Web
+     */
+    componentDidMount() {
+        let deck = [];
+
+        for(let i =0; i < AllCards.cards.length; i++){
+            let number = AllCards.cards[i];
+
+            for(let y = 0; y < AllCards.shape.length; y++){
+                let color = '';
+                let shape = AllCards.shape[y];
+
+                if(AllCards.shape[y] === 'Heart' || AllCards.shape[y] === 'Pike'){
+                    color = 'Red'
+                } else {
+                    color = 'Black'
+                }
+                deck.push({card: number, shape: shape, color: color})
+            }
+
         }
+        /*
+         * Fonction dans functions.js
+         * Permet de mélanger les cartes
+         */
+        shuffle(deck);
+        this.setState({deck: deck});
+    }
+
+    generateHand = () => {
+        // Calcule une position aléatoire dans le deck
+        let random = getRandomInt(this.state.deck.length);
+        // Chercher une main dans le deck
+        let hand = this.state.deck[random];
+
+        // On retire la main tirée du deck
+        let deck = this.state.deck;
+        deck.splice(random, 1);
+
+        // On met à jour le deck
+        this.setState({deck: deck});
+
+        return hand;
     };
 
     startRound = async () => {
         let active = this.state.showCards;
+
+        /*
+        Si il reste moins de deux cartes
+        Rechargement de la page (remise à zéro)
+         */
+        if(this.state.deck.length < 2){
+            window.confirm('Jeu terminé');
+            document.location.reload(true);
+        }
 
         if (!active) {
             this.generateNewCards();
@@ -69,18 +123,41 @@ export default class App extends Component {
     };
 
     getWinner = (leftHand, rightHand) => {
-        return leftHand.card > rightHand.card ? 'left' : 'right'
+        let winner = leftHand.card > rightHand.card ? 'left' : 'right';
+
+        /*
+        Mise à jour du système de points
+         */
+        if(winner === 'left') {
+            let leftPts = this.state.leftPts;
+            leftPts++;
+            this.setState({leftPts: leftPts})
+        }
+        if(winner === 'right'){
+            let rightPts = this.state.rightPts;
+            rightPts++;
+            this.setState({rightPts : rightPts})
+        }
+
+        return winner;
     };
 
     render() {
         return (
             <div className="App">
+                <div className="LeftPts FlexCenter NeonTextOnly">
+                    <p>{this.state.leftPts}</p>
+                </div>
+                <div className="RightPts FlexCenter NeonTextOnly">
+                    <p>{this.state.rightPts}</p>
+                </div>
+
                 <div className="LeftWinner FlexCenter NeonTextOnly">
-                    {(this.state.winner === 'left') && 'Winner'}
+                    <p>{(this.state.winner === 'left') && 'Winner'}</p>
                 </div>
 
                 <div className="RightWinner FlexCenter NeonTextOnly">
-                    {(this.state.winner === 'right') && 'Winner'}
+                    <p>{(this.state.winner === 'right') && 'Winner'}</p>
                 </div>
 
                 <div className="PlayerOne FlexCenter">
